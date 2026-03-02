@@ -1,43 +1,48 @@
+let playerScore = 0;
+let computerScore = 0;
 
-playGame();
+const rockBtn = document.querySelector("#rock");
+const paperBtn = document.querySelector("#paper");
+const scissorsBtn = document.querySelector("#scissors");
 
-function playGame(){
-    let humanScore = 0
-    let computerScore = 0
+rockBtn.addEventListener("click", () => playRound("rock"))
+paperBtn.addEventListener("click", () => playRound("paper"))
+scissorsBtn.addEventListener("click", () => playRound("scissors"))
 
-    for (let i = 1; i <= 5; i++) {
-        const humanChoice = getHumanChoice();
-        const computerChoice = getComputerChoice();
 
-        let result = playRound(humanChoice, computerChoice);
-        if (result === "Win"){
-            humanScore++
-        }
-        else if (result === "Lose"){
-            computerScore++
-        }
-        else{
-
-        }
-    }
-
-    console.log(`Final score: Human ${humanScore} - ${computerScore} Computer`)
-}
-
-function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice) {
   
+    const computerChoice = getComputerChoice();
     let result = getResult(humanChoice, computerChoice);
 
+    const resultDisplay = document.querySelector("#result");
+    const runningScore = document.querySelector("#runningScore")
+
     if (result === "Win"){
-        console.log(`You Win! ${humanChoice} beats ${computerChoice}`);
+        playerScore++;
+        resultDisplay.textContent = `You Win! ${humanChoice} beats ${computerChoice}`
     }
     else if (result === "Lose")
     {
-        console.log(`You Lose! ${computerChoice} beats ${humanChoice}`);
+        computerScore++;
+        resultDisplay.textContent = `You Lose! ${computerChoice} beats ${humanChoice}`
     }
-    else console.log('It was a draw!')
+    else  resultDisplay.textContent = 'It was a draw!'
+
+    checkWinner();
 
     return result;
+}
+
+function checkWinner(){
+    if (playerScore >= 5 || computerScore >= 5){
+
+        runningScore.textContent = `Game over! Final score: player ${playerScore} - ${computerScore} computer`
+    }
+    else 
+    {
+        runningScore.textContent = `Current score is you ${playerScore} - ${computerScore} computer`
+    }
 }
 
 function getResult(humanChoice, computerChoice) {
@@ -63,11 +68,5 @@ function getComputerChoice(){
         return "Paper"
     else
         return "Scissors"
-}
-
-function getHumanChoice(){
-    let humanChoice = prompt("Rock, paper or scissors?");
-    
-    return humanChoice
 }
 
